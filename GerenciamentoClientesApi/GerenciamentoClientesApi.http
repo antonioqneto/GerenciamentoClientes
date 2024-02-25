@@ -1,0 +1,6 @@
+@GerenciamentoClientesApi_HostAddress = http://localhost:5161
+
+GET {{GerenciamentoClientesApi_HostAddress}}/clientes/
+Accept: application/json
+
+###

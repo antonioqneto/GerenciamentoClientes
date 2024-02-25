@@ -1,0 +1,70 @@
+﻿@page "/listClientes"
+
+@using GerenciamentoClientes.Client.Services
+@inject ClienteService _clienteService
+
+<h1 class="text-center">Informações dos Clientes</h1>
+
+<NavLink class="nav-link d-flex justify-content-center" href="cadCliente">
+	<a class="btn btn-primary" href="cadCliente" role="button">Adicionar</a>
+</NavLink>
+
+
+@if (listaClientes == null)
+{
+	<p><em>Carregando...</em></p>
+}
+else
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Nome</th>
+				<th>Email</th>
+				<th>Telefone</th>
+				<th>Opçoes</th>
+			</tr>
+		</thead>
+		<tbody>
+			@if (listaClientes.Count == 0)
+			{
+				<p><em>Não foram encontrados registros de clientes...</em></p>
+			}
+			else
+			{
+				@foreach (var cliente in listaClientes)
+				{
+					<tr>
+						<td>@cliente.Id</td>
+						<td>@cliente.Nome</td>
+						<td>@cliente.Email</td>
+						<td>@cliente.Telefone</td>
+						<td style="display:flex">
+							<a class="nav-link" href="editCliente/@cliente.Id">
+								<span class="oi oi-pencil" aria-hidden="true" title="Editar">Editar</span>
+							</a>
+							<a class="nav-link" href="viewCliente/@cliente.Id">
+								<span class="oi oi-pencil" aria-hidden="true" title="Visualizar">Visualizar</span>
+							</a>
+							<a class="nav-link" href="deleteCliente/@cliente.Id">
+								<span class="oi oi-trash" aria-hidden="true" title="Deletar">Excluir</span>
+							</a>
+						</td>
+					</tr>
+				}
+			}
+		</tbody>
+	</table>
+}
+
+@code {
+	List<Cliente> listaClientes;
+
+	protected override async Task OnInitializedAsync()
+	{
+		listaClientes = await _clienteService.GetAllClientes() ?? new();
+	}
+
+
+}

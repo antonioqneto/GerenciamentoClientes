@@ -1,0 +1,6 @@
+.vs/
+Migrations/
+bin/
+obj/
+
+/Clientes.db

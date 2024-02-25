@@ -1,0 +1,89 @@
+﻿@page "/cadCliente"
+@page "/viewCliente/{clienteId}"
+@page "/editCliente/{clienteId}"
+
+@using GerenciamentoClientes.Client.Services
+
+@inject ClienteService _clienteService
+@inject NavigationManager _objNavigationManager
+
+<h2>Adicionar Cliente</h2>
+
+<hr />
+
+<EditForm Model="cliente"  OnValidSubmit="@Submit">
+	<div class="mb-3">
+		<label for="nome" class="form-label">Nome</label>
+		<InputText type="text" class="form-control" id="nome" @bind-Value="cliente.Nome" />
+		<ValidationMessage For="() => cliente.Nome" />
+	</div>
+
+	<div class="mb-3">
+		<label for="email" class="form-label">Email</label>
+		<InputText type="email" class="form-control" id="email" @bind-Value="cliente.Email" />
+		<ValidationMessage For="() => cliente.Email" />
+	</div>
+
+	<div class="mb-3">
+		<label for="telefone" class="form-label">Telefone</label>
+		<InputText type="telefone" class="form-control" id="telefone" @bind-Value="cliente.Telefone" />
+		<ValidationMessage For="() => cliente.Telefone" />
+	</div>
+
+	<br />
+
+	<div class="mb-3 text-center">
+		<button Type="submit" class="btn btn-primary" Color="ButtonColor.Primary" value="Salvar"> Enviar </button>
+		<button Type="reset" class="btn btn-secondary" Color="ButtonColor.Secundary" @onclick="@Cancel" value="Cancelar"> Cancelar </button>
+	</div>
+
+	<DataAnnotationsValidator />
+</EditForm>
+
+@code {
+	[Parameter] public string clienteId { get; set; }
+	private Cliente cliente { get; set; } = new();
+
+	private bool novoCadastro { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		_ = Int32.TryParse(clienteId, out var stringToInt);
+
+		cliente.Id = stringToInt;
+		novoCadastro = cliente.Id == 0;
+
+		if (!novoCadastro)
+		{
+			cliente = await _clienteService.GetClienteById(cliente.Id);
+		}
+	}
+
+	protected async void Submit()
+	{
+		bool result;
+
+		if (novoCadastro)
+		{
+			result = await _clienteService.CreateCliente(cliente);
+		}
+		else
+		{
+			result = await _clienteService.UpdateCliente(cliente);
+		}
+
+		if (result)
+		{
+			_objNavigationManager.NavigateTo("listClientes");
+		}
+		else
+		{
+			
+		}
+	}
+
+	void Cancel()
+	{
+		_objNavigationManager.NavigateTo("listClientes");
+	}
+}
