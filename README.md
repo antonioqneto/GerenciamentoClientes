@@ -14,6 +14,22 @@ Sistema de gerenciamento de clientes, implementando listagem e formulários de c
 * Rotas Funcionais 
 * Validação de Entrada
 * Banco de dados implementado, com migration e dados iniciais
+
+## Implementação
+
+Após compilar os projetos, inserir no Package Manager Console o comando
+```
+add-migration Init
+```
+e, em seguida,
+```
+update-database
+```
+Assim, nosso banco (SQLite) já estará inicializado e criado em  ```GerenciamentoClientesApi/gerenciamentoClientes.db```
+
+Para rodar a aplicação, mude a execuçao https para IIS Express em ```GerenciamentoClientesApi``` e ```GerenciamentoClientesBlazor```.
+Defina esses projet9os para [inicialização múltipla](https://learn.microsoft.com/pt-br/visualstudio/ide/how-to-set-multiple-startup-projects?view=vs-2022).
+
 ---
 ## TODOs 
 
